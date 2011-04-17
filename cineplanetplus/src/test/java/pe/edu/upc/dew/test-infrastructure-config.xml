@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<!-- import resource="classpath:pe/edu/upc/dew/application-config.xml"/ -->
+
+	<!-- Infrastructure configuration to support system testing the rewards 
+		application. These beans are defined in a separate file to isolate infrastructure 
+		config from application config, as infrastructure often varies between environments. 
+		For example, in a test environment you might use a lightweight in-memory 
+		DataSource, while in production you connect to a database server with a connection 
+		pool. -->
+
+    <!-- Dao -->
+	<bean id="usuarioDao" class="pe.edu.upc.dew.dao.jdbc.UsuarioDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="perfilDao" class="pe.edu.upc.dew.dao.jdbc.PerfilDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="salaDao" class="pe.edu.upc.dew.dao.jdbc.SalaDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="peliculaDao" class="pe.edu.upc.dew.dao.jdbc.PeliculaDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="horarioDao" class="pe.edu.upc.dew.dao.jdbc.HorarioDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="carteleraDao" class="pe.edu.upc.dew.dao.jdbc.CarteleraDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="filaAsientoDao" class="pe.edu.upc.dew.dao.jdbc.FilaAsientoDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>	
+	
+	<bean id="reservacionDao" class="pe.edu.upc.dew.dao.jdbc.ReservacionDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>	
+	<!-- Services -->	
+	<bean id="peliculaService" class="pe.edu.upc.dew.service.impl.PeliculaServiceImpl">
+		<property name="peliculaDao" ref="peliculaDao" />
+	</bean>	
+	
+	<bean id="carteleraService" class="pe.edu.upc.dew.service.impl.CarteleraServiceImpl">
+		<property name="carteleraDao" ref="carteleraDao" />
+	</bean>	
+	
+	<bean id="reservacionService" class="pe.edu.upc.dew.service.impl.ReservacionServiceImpl">
+		<property name="reservacionDao" ref="reservacionDao" />
+		<property name="filaAsientoDao" ref="filaAsientoDao" />
+	</bean>		
+	
+	<bean id="usuarioService" class="pe.edu.upc.dew.service.impl.UsuarioServiceImpl">
+		<property name="usuarioDao" ref="usuarioDao" />
+	</bean>		
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/cinedatabase" />
+		<property name="username" value="root" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<!-- Local, JDBC-based TransactionManager -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>
